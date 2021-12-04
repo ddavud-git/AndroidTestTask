@@ -1,5 +1,6 @@
 package com.example.androidtesttask.ui
 
+import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidtesttask.R
 import com.example.androidtesttask.adapters.SimpleItemRecyclerViewAdapter
+import com.example.androidtesttask.cache.dao.CountryDao
 import com.example.androidtesttask.databinding.FragmentItemListBinding
 import com.example.androidtesttask.placeholder.PlaceholderContent
 import dagger.android.support.DaggerFragment
@@ -19,6 +21,9 @@ class CountryListFragment : DaggerFragment() {
 
     @Inject
     lateinit var data: String
+
+    @Inject
+    lateinit var countrDao: CountryDao
 
     private var _binding: FragmentItemListBinding? = null
 
@@ -37,6 +42,7 @@ class CountryListFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("Country List Fragment", "data string injected is $data")
+        Log.d("Country List Fragment", "dao injected is $countrDao")
 
         val recyclerView: RecyclerView = binding.itemList
 

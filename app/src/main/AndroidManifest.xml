@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidTestTask"
-        android:name=".Application">
+        android:name=".App">
         <activity
             android:name=".ui.CountriesActivity"
             android:exported="true"
