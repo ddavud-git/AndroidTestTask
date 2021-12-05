@@ -11,4 +11,11 @@ Application contains 2 screens.
 1. Country list 
 2. Country details
 
+First Screen represents list that holds countries' name and belonging continent.
+
+Second screen shows single country details.
+
+
 https://countries.trevorblades.com api is used to get dummy data
+
+
