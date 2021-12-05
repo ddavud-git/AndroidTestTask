@@ -6,27 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidtesttask.R
 import com.example.androidtesttask.adapters.SimpleItemRecyclerViewAdapter
-import com.example.androidtesttask.cache.dao.CountryDao
 import com.example.androidtesttask.databinding.FragmentItemListBinding
+import com.example.androidtesttask.di.viewmodel.AppViewModelFactory
 import com.example.androidtesttask.placeholder.PlaceholderContent
+import com.example.androidtesttask.ui.countries.CountriesViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class CountryListFragment : DaggerFragment() {
 
-    @Inject
-    lateinit var data: String
-
-    @Inject
-    lateinit var countrDao: CountryDao
-
     private var _binding: FragmentItemListBinding? = null
 
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var providerFactory: AppViewModelFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(requireActivity(), providerFactory)[CountriesViewModel::class.java]
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +45,7 @@ class CountryListFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("Country List Fragment", "data string injected is $data")
-        Log.d("Country List Fragment", "dao injected is $countrDao")
+
 
         val recyclerView: RecyclerView = binding.itemList
 
@@ -73,6 +77,16 @@ class CountryListFragment : DaggerFragment() {
             true
         }
         setupRecyclerView(recyclerView, onClickListener, onContextClickListener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getCountryList()
+
+        viewModel.countries.observe(viewLifecycleOwner, Observer {
+            Log.d("network data" , "size ${it.countries}")
+        })
     }
 
     private fun setupRecyclerView(
