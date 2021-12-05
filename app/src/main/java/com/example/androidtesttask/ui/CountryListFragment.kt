@@ -1,20 +1,22 @@
 package com.example.androidtesttask.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidtesttask.R
 import com.example.androidtesttask.adapters.SimpleItemRecyclerViewAdapter
 import com.example.androidtesttask.databinding.FragmentItemListBinding
 import com.example.androidtesttask.di.viewmodel.AppViewModelFactory
-import com.example.androidtesttask.placeholder.PlaceholderContent
+import com.example.androidtesttask.entity.PlaceholderItem
+import com.example.androidtesttask.network.ResultStatus
 import com.example.androidtesttask.ui.countries.CountriesViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -25,6 +27,8 @@ class CountryListFragment : DaggerFragment() {
 
     private val binding get() = _binding!!
 
+    private lateinit var adapter: SimpleItemRecyclerViewAdapter
+
     @Inject
     lateinit var providerFactory: AppViewModelFactory
 
@@ -32,6 +36,35 @@ class CountryListFragment : DaggerFragment() {
         ViewModelProvider(requireActivity(), providerFactory)[CountriesViewModel::class.java]
     }
 
+
+    init {
+        lifecycleScope.launchWhenStarted {
+            try {
+                viewModel.getCountryList()
+            } finally {
+                if (lifecycle.currentState >= Lifecycle.State.STARTED) {
+                    viewModel.countries.observe(viewLifecycleOwner, Observer {
+
+                        when (it) {
+                            is ResultStatus.Success -> adapter.updateList(
+                                it.data
+                            )
+                            is ResultStatus.ErrorRes -> showErrorMessage(it.e)
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    private fun showErrorMessage(e: Exception) {
+        Toast.makeText(requireContext(), "Error ${e.printStackTrace()}", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = SimpleItemRecyclerViewAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,11 +86,11 @@ class CountryListFragment : DaggerFragment() {
 
 
         val onClickListener = View.OnClickListener { itemView ->
-            val item = itemView.tag as PlaceholderContent.PlaceholderItem
+            val item = itemView.tag as PlaceholderItem
             val bundle = Bundle()
-            bundle.putString(
+            bundle.putParcelable(
                 CountryDetailFragment.ARG_ITEM_ID,
-                item.id
+                item
             )
             if (itemDetailFragmentContainer != null) {
                 itemDetailFragmentContainer.findNavController()
@@ -68,10 +101,10 @@ class CountryListFragment : DaggerFragment() {
         }
 
         val onContextClickListener = View.OnContextClickListener { v ->
-            val item = v.tag as PlaceholderContent.PlaceholderItem
+            val item = v.tag as PlaceholderItem
             Toast.makeText(
                 v.context,
-                "Context click of item " + item.id,
+                "Context click of item " + item.code,
                 Toast.LENGTH_LONG
             ).show()
             true
@@ -79,27 +112,15 @@ class CountryListFragment : DaggerFragment() {
         setupRecyclerView(recyclerView, onClickListener, onContextClickListener)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.getCountryList()
-
-        viewModel.countries.observe(viewLifecycleOwner, Observer {
-            Log.d("network data" , "size ${it.countries}")
-        })
-    }
-
     private fun setupRecyclerView(
         recyclerView: RecyclerView,
         onClickListener: View.OnClickListener,
         onContextClickListener: View.OnContextClickListener
     ) {
+        adapter.onClickListener = onClickListener
+        adapter.onContextClickListener = onContextClickListener
 
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(
-            PlaceholderContent.ITEMS,
-            onClickListener,
-            onContextClickListener
-        )
+        recyclerView.adapter = adapter
     }
 
 
