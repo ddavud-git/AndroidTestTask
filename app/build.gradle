@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id("com.apollographql.apollo").version("2.5.4")
+
 }
 
 android {
@@ -34,6 +36,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    apollo {
+        generateKotlinModels.set(true)
+    }
 }
 
 dependencies {
@@ -63,6 +68,10 @@ dependencies {
     // Database
     implementation 'androidx.room:room-runtime:2.3.0'
     kapt 'androidx.room:room-compiler:2.3.0'
-    implementation("androidx.room:room-ktx:2.3.0")
+    implementation "androidx.room:room-ktx:2.3.0"
+
+    //GraphQL dependency
+    implementation "com.apollographql.apollo:apollo-runtime:$apollographql_version"
+    implementation  "com.apollographql.apollo:apollo-coroutines-support:$apollographql_version"
 
 }
