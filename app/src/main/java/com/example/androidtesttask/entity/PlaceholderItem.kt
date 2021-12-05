@@ -11,6 +11,5 @@ class PlaceholderItem(
     val native: String,
     val currency: String?
 ) : Parcelable {
-
     override fun toString(): String = name
 }

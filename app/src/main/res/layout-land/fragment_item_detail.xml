@@ -2,16 +2,91 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/item_detail_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <TextView
         android:id="@+id/country_code"
         style="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:paddingStart="@dimen/container_horizontal_margin"
+        android:paddingTop="16dp"
+        android:paddingEnd="@dimen/container_horizontal_margin"
+        android:paddingBottom="16dp"
         android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:context="com.example.androidtesttask.ui.CountryDetailFragment" />
+
+    <TextView
+        android:id="@+id/country_name"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/container_horizontal_margin"
+        android:paddingTop="16dp"
+        android:paddingEnd="@dimen/container_horizontal_margin"
+        android:paddingBottom="16dp"
+        android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country_code"
+        tools:context="com.example.androidtesttask.ui.CountryDetailFragment" />
+
+    <TextView
+        android:id="@+id/country_capital"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/container_horizontal_margin"
+        android:paddingTop="16dp"
+        android:paddingEnd="@dimen/container_horizontal_margin"
+        android:paddingBottom="16dp"
+        android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country_name"
+        tools:context="com.example.androidtesttask.ui.CountryDetailFragment" />
+
+    <TextView
+        android:id="@+id/country_native"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/container_horizontal_margin"
+        android:paddingTop="16dp"
+        android:paddingEnd="@dimen/container_horizontal_margin"
+        android:paddingBottom="16dp"
+        android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country_capital"
+        tools:context="com.example.androidtesttask.ui.CountryDetailFragment" />
+
+    <TextView
+        android:id="@+id/country_currency"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/container_horizontal_margin"
+        android:paddingTop="16dp"
+        android:paddingEnd="@dimen/container_horizontal_margin"
+        android:paddingBottom="16dp"
+        android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country_native"
+        tools:context="com.example.androidtesttask.ui.CountryDetailFragment" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -20,8 +20,8 @@ class SubModule {
 
     @CountriesScope
     @Provides
-    fun provideRepoImp(apolloClient: ApolloClient, countryDao: CountryDao): CountryRepository {
-        return CountryRepoImpl(apolloClient, countryDao)
+    fun provideRepoImp(apolloClient: ApolloClient): CountryRepository {
+        return CountryRepoImpl(apolloClient)
     }
 
 }

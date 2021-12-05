@@ -11,8 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.CountriesListQuery
-import com.example.androidtesttask.Constants.LOG_DATA_TAG
+import com.example.androidtesttask.Constants.LOG_IO_DATA_TAG
 import com.example.androidtesttask.databinding.ItemListContentBinding
 import com.example.androidtesttask.entity.PlaceholderItem
 
@@ -72,20 +71,9 @@ class SimpleItemRecyclerViewAdapter :
     }
 
 
-    fun updateList(data: CountriesListQuery.Data) {
-        Log.d(LOG_DATA_TAG, "data loading to adapter ${data.countries}")
-        val values =
-            data.countries.map { country ->
-                PlaceholderItem(
-                    country.code,
-                    country.name,
-                    country.capital,
-                    country.native_,
-                    country.currency
-                )
-            }
-
-        submitList(values)
+    fun updateList(data: List<PlaceholderItem>) {
+        Log.d(LOG_IO_DATA_TAG, "data loading to adapter ${data}")
+        submitList(data)
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.androidtesttask.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidtesttask.Constants
 import com.example.androidtesttask.R
 import com.example.androidtesttask.adapters.SimpleItemRecyclerViewAdapter
 import com.example.androidtesttask.databinding.FragmentItemListBinding
@@ -43,22 +45,48 @@ class CountryListFragment : DaggerFragment() {
                 viewModel.getCountryList()
             } finally {
                 if (lifecycle.currentState >= Lifecycle.State.STARTED) {
-                    viewModel.countries.observe(viewLifecycleOwner, Observer {
+                    viewModel.cache.observe(viewLifecycleOwner, Observer { data ->
+                        val values =
+                            data.map { country ->
+                                PlaceholderItem(
+                                    country.code,
+                                    country.name,
+                                    country.capital,
+                                    country.native,
+                                    country.currency
+                                )
+                            }
+                        adapter.updateList(values)
 
+                    })
+
+                    viewModel.networkResLiveData.observe(viewLifecycleOwner, Observer {
                         when (it) {
-                            is ResultStatus.Success -> adapter.updateList(
-                                it.data
-                            )
+                            is ResultStatus.Success -> {
+                                Log.d(Constants.LOG_NETWORK_TAG, "Request done successfully")
+                            }
                             is ResultStatus.ErrorRes -> showErrorMessage(it.e)
+                            is ResultStatus.NetworkError ->
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Check your connectivity",
+                                    Toast.LENGTH_LONG
+                                ).show()
+
                         }
                     })
                 }
+
             }
         }
     }
 
     private fun showErrorMessage(e: Exception) {
-        Toast.makeText(requireContext(), "Error ${e.printStackTrace()}", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            requireContext(),
+            "Error while sending request ${e.printStackTrace()}",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

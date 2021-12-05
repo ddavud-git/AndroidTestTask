@@ -7,7 +7,7 @@ import com.example.CountriesListQuery
 import com.example.androidtesttask.cache.dao.CountryDao
 import javax.inject.Inject
 
-class CountryRepoImpl @Inject constructor(private val apolloClient: ApolloClient,private val countryDao: CountryDao) : CountryRepository {
+class CountryRepoImpl @Inject constructor(private val apolloClient: ApolloClient) : CountryRepository {
 
     override suspend fun queryCountries(): Response<CountriesListQuery.Data> {
         return apolloClient.query(CountriesListQuery()).await()
