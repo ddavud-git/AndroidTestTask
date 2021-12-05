@@ -4,7 +4,6 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.coroutines.await
 import com.example.CountriesListQuery
-import com.example.androidtesttask.cache.dao.CountryDao
 import javax.inject.Inject
 
 class CountryRepoImpl @Inject constructor(private val apolloClient: ApolloClient) : CountryRepository {

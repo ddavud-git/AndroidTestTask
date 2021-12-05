@@ -1,20 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:layout_marginVertical="16dp"
+    android:layout_marginHorizontal="16dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/id_text"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
-
-    <TextView
-        android:id="@+id/content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
-</LinearLayout>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="16dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/text_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="72dp" />
+
+        <ImageView
+            android:id="@+id/start_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_location_on_24"
+            app:layout_constraintTop_toTopOf="@+id/top_guideline"
+            app:layout_constraintStart_toStartOf="@id/left_guideline"/>
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Equatorial Guinea"
+            android:textAppearance="@style/ListTitleTextAppearance"
+            app:layout_constraintStart_toStartOf="@+id/text_guideline"
+            app:layout_constraintTop_toTopOf="@id/top_guideline" />
+
+    <TextView
+        android:id="@+id/content_text"
+        android:layout_width="wrap_content"
+        tools:text="Africa"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/text_guideline"
+        android:textAppearance="@style/ListSecondaryTextAppearance"
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

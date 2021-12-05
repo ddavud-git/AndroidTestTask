@@ -6,7 +6,7 @@ import com.example.androidtesttask.cache.dao.CountryDao
 import com.example.androidtesttask.entity.Country
 
 @Database(
-    entities = [Country::class], version = 1,
+    entities = [Country::class], version = 2,
     exportSchema = false
 )
 

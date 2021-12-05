@@ -16,8 +16,7 @@ class Country(
     @ColumnInfo(name = "native")
     var native: String = "",
     @ColumnInfo(name = "currency")
-    var currency: String = ""
-) {
-//    @PrimaryKey(autoGenerate = true)
-//    var id: Long = 0L
-}
+    var currency: String = "",
+    @ColumnInfo(name = "continent")
+    var continent: String = ""
+)

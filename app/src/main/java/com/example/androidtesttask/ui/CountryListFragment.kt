@@ -7,14 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidtesttask.Constants
 import com.example.androidtesttask.R
-import com.example.androidtesttask.adapters.SimpleItemRecyclerViewAdapter
+import com.example.androidtesttask.adapters.CountryRecyclerViewAdapter
 import com.example.androidtesttask.databinding.FragmentItemListBinding
 import com.example.androidtesttask.di.viewmodel.AppViewModelFactory
 import com.example.androidtesttask.entity.PlaceholderItem
@@ -29,7 +28,7 @@ class CountryListFragment : DaggerFragment() {
 
     private val binding get() = _binding!!
 
-    private lateinit var adapter: SimpleItemRecyclerViewAdapter
+    private lateinit var adapter: CountryRecyclerViewAdapter
 
     @Inject
     lateinit var providerFactory: AppViewModelFactory
@@ -40,12 +39,12 @@ class CountryListFragment : DaggerFragment() {
 
 
     init {
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenStarted { //This code block is triggered only when lifecycle state is STARTED
             try {
                 viewModel.getCountryList()
             } finally {
-                if (lifecycle.currentState >= Lifecycle.State.STARTED) {
-                    viewModel.cache.observe(viewLifecycleOwner, Observer { data ->
+                if (lifecycle.currentState >= Lifecycle.State.STARTED) { // this block providing user interact after lifecycle state being started
+                    viewModel.cache.observe(viewLifecycleOwner, { data ->
                         val values =
                             data.map { country ->
                                 PlaceholderItem(
@@ -53,14 +52,15 @@ class CountryListFragment : DaggerFragment() {
                                     country.name,
                                     country.capital,
                                     country.native,
-                                    country.currency
+                                    country.currency,
+                                    country.continent
                                 )
                             }
                         adapter.updateList(values)
 
                     })
 
-                    viewModel.networkResLiveData.observe(viewLifecycleOwner, Observer {
+                    viewModel.networkResLiveData.observe(viewLifecycleOwner, {
                         when (it) {
                             is ResultStatus.Success -> {
                                 Log.d(Constants.LOG_NETWORK_TAG, "Request done successfully")
@@ -73,6 +73,7 @@ class CountryListFragment : DaggerFragment() {
                                     Toast.LENGTH_LONG
                                 ).show()
 
+                            else -> {Log.d(Constants.LOG_NETWORK_TAG, "Result is not appointed status is still IDLE")}
                         }
                     })
                 }
@@ -91,7 +92,7 @@ class CountryListFragment : DaggerFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = SimpleItemRecyclerViewAdapter()
+        adapter = CountryRecyclerViewAdapter()
     }
 
     override fun onCreateView(

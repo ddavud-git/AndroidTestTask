@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.androidtesttask.entity.Country
-import kotlinx.coroutines.Deferred
 
 @Dao
 interface CountryDao {

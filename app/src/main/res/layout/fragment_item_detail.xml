@@ -22,12 +22,14 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:toolbarId="@+id/toolbar">
 
+
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/detail_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -45,13 +47,11 @@
 
                 <TextView
                     android:id="@+id/country_code"
-                    style="?android:attr/textAppearanceLarge"
+                    style="@style/ListTitleTextAppearance"
+                    android:padding="8dp"
+                    tools:text="Country code UA"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingStart="@dimen/container_horizontal_margin"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="@dimen/container_horizontal_margin"
-                    android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -59,13 +59,11 @@
 
                 <TextView
                     android:id="@+id/country_name"
-                    style="?android:attr/textAppearanceLarge"
+                    style="@style/ListTitleTextAppearance"
+                    android:padding="8dp"
+                    tools:text="Country name Ukraine"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingStart="@dimen/container_horizontal_margin"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="@dimen/container_horizontal_margin"
-                    android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/country_code"
@@ -73,13 +71,11 @@
 
                 <TextView
                     android:id="@+id/country_capital"
-                    style="?android:attr/textAppearanceLarge"
+                    style="@style/ListTitleTextAppearance"
+                    android:padding="8dp"
+                    tools:text="Country capital Kyiv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingStart="@dimen/container_horizontal_margin"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="@dimen/container_horizontal_margin"
-                    android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/country_name"
@@ -87,13 +83,11 @@
 
                 <TextView
                     android:id="@+id/country_native"
-                    style="?android:attr/textAppearanceLarge"
+                    style="@style/ListTitleTextAppearance"
+                    android:padding="8dp"
+                    tools:text="Country native Україна"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingStart="@dimen/container_horizontal_margin"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="@dimen/container_horizontal_margin"
-                    android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/country_capital"
@@ -101,32 +95,31 @@
 
                 <TextView
                     android:id="@+id/country_currency"
-                    style="?android:attr/textAppearanceLarge"
+                    style="@style/ListTitleTextAppearance"
+                    android:padding="8dp"
                     android:layout_width="wrap_content"
+                    tools:text="Country currency UAH"
                     android:layout_height="match_parent"
-                    android:paddingStart="@dimen/container_horizontal_margin"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="@dimen/container_horizontal_margin"
-                    android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/country_native"
                     tools:context="com.example.androidtesttask.ui.CountryDetailFragment" />
 
+                <TextView
+                    android:id="@+id/country_continent"
+                    style="@style/ListTitleTextAppearance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:textIsSelectable="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/country_currency"
+                    tools:context="com.example.androidtesttask.ui.CountryDetailFragment"
+                    tools:text="Country continent Europe" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.core.widget.NestedScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="16dp"
-            app:layout_anchor="@+id/item_detail_scroll_view"
-            app:layout_anchorGravity="top|end"
-            app:srcCompat="@android:drawable/stat_notify_chat" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

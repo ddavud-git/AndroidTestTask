@@ -5,5 +5,6 @@
     <string name="country_native">Country native: %s</string>
     <string name="country_currency">Country currency: %s</string>
     <string name="country_capital">Country capital: %s</string>
+    <string name="country_continent">Country continent: %s</string>
     <string name="title_item_detail">Country Details</string>
 </resources>

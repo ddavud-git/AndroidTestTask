@@ -16,7 +16,7 @@
     <fragment
         android:id="@+id/item_detail_fragment"
         android:name="com.example.androidtesttask.ui.CountryDetailFragment"
-        android:label="item_detail"
+        android:label="Country details"
         tools:layout="@layout/fragment_item_detail">
         <argument
             android:name="item_id"

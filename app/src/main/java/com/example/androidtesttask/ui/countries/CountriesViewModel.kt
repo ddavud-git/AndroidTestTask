@@ -30,7 +30,7 @@ class CountriesViewModel @Inject constructor(
     fun getCountryList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                var networkRes: ResultStatus? = null
+                var networkRes: ResultStatus = ResultStatus.Idle
                 try {
                     val res = countryRepoImpl.queryCountries()
                     val data = res.data
@@ -42,17 +42,18 @@ class CountriesViewModel @Inject constructor(
                                 country.name,
                                 country.capital ?: "",
                                 country.native_,
-                                country.currency ?: ""
+                                country.currency ?: "",
+                                country.continent.name
                             )
                         }
                         val ids= countryDao.insert(dataToInsert)
                         Log.d(Constants.LOG_IO_DATA_TAG,"Response data saved to cache successfully id -> $ids")
-                        networkRes = ResultStatus.Success()
+                        networkRes = ResultStatus.Success
                     }
 
 
                 } catch (e: ApolloNetworkException) {
-                    networkRes = ResultStatus.NetworkError()
+                    networkRes = ResultStatus.NetworkError
                 } catch (e: Exception) {
                     Log.e(Constants.LOG_IO_DATA_TAG, e.stackTraceToString())
                     networkRes = ResultStatus.ErrorRes(e)
