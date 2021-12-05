@@ -5,7 +5,7 @@ import com.example.androidtesttask.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 
-class Application:DaggerApplication() {
+class App:DaggerApplication() {
     private var appComponent: AppComponent? = null
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

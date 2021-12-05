@@ -4,18 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import com.example.androidtesttask.R
 import com.example.androidtesttask.databinding.FragmentItemDetailBinding
-import com.example.androidtesttask.placeholder.PlaceholderContent
-import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.example.androidtesttask.entity.PlaceholderItem
 import dagger.android.support.DaggerFragment
 
 class CountryDetailFragment : DaggerFragment() {
 
-    private var item: PlaceholderContent.PlaceholderItem? = null
+    private var item: PlaceholderItem? = null
 
-    lateinit var itemDetailTextView: TextView
-    private var toolbarLayout: CollapsingToolbarLayout? = null
 
     private var _binding: FragmentItemDetailBinding? = null
 
@@ -26,7 +23,7 @@ class CountryDetailFragment : DaggerFragment() {
 
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
-                item = PlaceholderContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
+                item = it.getParcelable(ARG_ITEM_ID)
             }
         }
     }
@@ -34,23 +31,25 @@ class CountryDetailFragment : DaggerFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
-        toolbarLayout = binding.toolbarLayout
-        itemDetailTextView = binding.itemDetail
 
         updateContent()
         return rootView
     }
 
     private fun updateContent() {
-        toolbarLayout?.title = item?.content
-
         item?.let {
-            itemDetailTextView.text = it.details
+            binding.toolbarLayout?.title = it.name
+            binding.countryCode.text = getString(R.string.country_code, it.code)
+            binding.countryName.text = getString(R.string.country_name, it.name)
+            binding.countryCapital.text = getString(R.string.country_capital, it.capital)
+            binding.countryCurrency.text = getString(R.string.country_currency, it.currency)
+            binding.countryNative.text = getString(R.string.country_native, it.native)
+            binding.countryContinent.text = getString(R.string.country_continent, it.continent)
         }
     }
 

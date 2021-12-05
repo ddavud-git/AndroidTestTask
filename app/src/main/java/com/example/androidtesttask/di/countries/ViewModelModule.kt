@@ -1,5 +1,6 @@
 package com.example.androidtesttask.di.countries
 
+import androidx.lifecycle.ViewModel
 import com.example.androidtesttask.di.scopes.CountriesScope
 import com.example.androidtesttask.di.scopes.ViewModelKey
 import com.example.androidtesttask.ui.countries.CountriesViewModel
@@ -14,6 +15,6 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(CountriesViewModel::class)
-    abstract fun getCountriesViewModel(countriesViewModel: CountriesViewModel):CountriesViewModel
+    abstract fun bindCountriesViewModel(countriesViewModel: CountriesViewModel):ViewModel
 
 }

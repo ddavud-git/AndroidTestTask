@@ -1,0 +1,12 @@
+query countriesList{
+    countries{
+        code
+        name
+        capital
+        native
+        currency
+        continent{
+            name
+        }
+    }
+}
