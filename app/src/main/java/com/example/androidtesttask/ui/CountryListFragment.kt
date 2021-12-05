@@ -65,11 +65,7 @@ class CountryListFragment : DaggerFragment() {
     }
 
     private fun showErrorMessage(e: Exception) {
-        Toast.makeText(
-            requireContext(),
-            "Error while sending request ${e.printStackTrace()}",
-            Toast.LENGTH_LONG
-        ).show()
+       showToastMsg("Error while sending request ${e.printStackTrace()}")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,11 +109,7 @@ class CountryListFragment : DaggerFragment() {
 
         val onContextClickListener = View.OnContextClickListener { v ->
             val item = v.tag as PlaceholderItem
-            Toast.makeText(
-                v.context,
-                "Context click of item " + item.code,
-                Toast.LENGTH_LONG
-            ).show()
+            showToastMsg("Context click of item " + item.code)
             true
         }
         setupRecyclerView(recyclerView, onClickListener, onContextClickListener)
