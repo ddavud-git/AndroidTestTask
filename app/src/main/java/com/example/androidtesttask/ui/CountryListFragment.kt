@@ -19,6 +19,7 @@ import com.example.androidtesttask.di.viewmodel.AppViewModelFactory
 import com.example.androidtesttask.entity.PlaceholderItem
 import com.example.androidtesttask.network.ResultStatus
 import com.example.androidtesttask.ui.countries.CountriesViewModel
+import com.example.androidtesttask.util.DataConverter.convertDataToPlaceHolder
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -45,35 +46,16 @@ class CountryListFragment : DaggerFragment() {
             } finally {
                 if (lifecycle.currentState >= Lifecycle.State.STARTED) { // this block providing user interact after lifecycle state being started
                     viewModel.cache.observe(viewLifecycleOwner, { data ->
-                        val values =
-                            data.map { country ->
-                                PlaceholderItem(
-                                    country.code,
-                                    country.name,
-                                    country.capital,
-                                    country.native,
-                                    country.currency,
-                                    country.continent
-                                )
-                            }
-                        adapter.updateList(values)
-
+                        adapter.updateList(data = data.convertDataToPlaceHolder())
                     })
 
                     viewModel.networkResLiveData.observe(viewLifecycleOwner, {
                         when (it) {
-                            is ResultStatus.Success -> {
-                                Log.d(Constants.LOG_NETWORK_TAG, "Request done successfully")
-                            }
+                            is ResultStatus.Success -> logNetworkMsg("Request done successfully")
                             is ResultStatus.ErrorRes -> showErrorMessage(it.e)
-                            is ResultStatus.NetworkError ->
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Check your connectivity",
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                            else -> {Log.d(Constants.LOG_NETWORK_TAG, "Result is not appointed status is still IDLE")}
+                            is ResultStatus.SaveCacheFail -> showToastMsg("Save to cache not success error ${it.e.printStackTrace()}")
+                            is ResultStatus.NetworkError -> showToastMsg("Check your connectivity")
+                            else -> logNetworkMsg("Result is not appointed status is still IDLE")
                         }
                     })
                 }
@@ -156,5 +138,13 @@ class CountryListFragment : DaggerFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun logNetworkMsg(msg: String) {
+        Log.d(Constants.LOG_NETWORK_TAG, msg)
+    }
+
+    private fun showToastMsg(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
     }
 }

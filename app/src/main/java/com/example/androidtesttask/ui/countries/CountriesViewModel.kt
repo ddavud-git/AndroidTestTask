@@ -5,12 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloNetworkException
+import com.example.CountriesListQuery
 import com.example.androidtesttask.Constants
 import com.example.androidtesttask.cache.dao.CountryDao
-import com.example.androidtesttask.entity.Country
 import com.example.androidtesttask.network.ResultStatus
 import com.example.androidtesttask.repository.country.CountryRepoImpl
+import com.example.androidtesttask.util.DataConverter.convertDataToCountry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,38 +32,31 @@ class CountriesViewModel @Inject constructor(
     fun getCountryList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                var networkRes: ResultStatus = ResultStatus.Idle
-                try {
+                val networkRes: ResultStatus = try {
                     val res = countryRepoImpl.queryCountries()
-                    val data = res.data
-                    data?.let {
-
-                        val dataToInsert = data.countries.map { country ->
-                            Country(
-                                country.code,
-                                country.name,
-                                country.capital ?: "",
-                                country.native_,
-                                country.currency ?: "",
-                                country.continent.name
-                            )
-                        }
-                        val ids= countryDao.insert(dataToInsert)
-                        Log.d(Constants.LOG_IO_DATA_TAG,"Response data saved to cache successfully id -> $ids")
-                        networkRes = ResultStatus.Success
-                    }
-
-
+                    saveToCache(res)
                 } catch (e: ApolloNetworkException) {
-                    networkRes = ResultStatus.NetworkError
+                    ResultStatus.NetworkError
                 } catch (e: Exception) {
                     Log.e(Constants.LOG_IO_DATA_TAG, e.stackTraceToString())
-                    networkRes = ResultStatus.ErrorRes(e)
-                } finally {
-                    _networkResMutableLiveData.postValue(networkRes)
+                    ResultStatus.ErrorRes(e)
                 }
+                _networkResMutableLiveData.postValue(networkRes)
             }
-
         }
     }
+
+    private fun saveToCache(res: Response<CountriesListQuery.Data>): ResultStatus {
+        val data = res.data
+        return try {
+            val dataToInsert = data!!.convertDataToCountry()
+            val ids = countryDao.insert(dataToInsert)
+            Log.d(Constants.LOG_IO_DATA_TAG, "Response data saved to cache successfully id -> $ids")
+            ResultStatus.Success
+        } catch (e: java.lang.Exception) {
+            ResultStatus.SaveCacheFail(e)
+        }
+    }
+
+
 }
