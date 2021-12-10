@@ -18,7 +18,7 @@ import com.example.androidtesttask.databinding.FragmentItemListBinding
 import com.example.androidtesttask.di.viewmodel.AppViewModelFactory
 import com.example.androidtesttask.entity.PlaceholderItem
 import com.example.androidtesttask.network.ResultStatus
-import com.example.androidtesttask.ui.countries.CountriesViewModel
+import com.example.androidtesttask.ui.viewmodel.CountriesViewModel
 import com.example.androidtesttask.util.DataConverter.convertDataToPlaceHolder
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -38,15 +38,15 @@ class CountryListFragment : DaggerFragment() {
         ViewModelProvider(requireActivity(), providerFactory)[CountriesViewModel::class.java]
     }
 
-
     init {
         lifecycleScope.launchWhenStarted { //This code block is triggered only when lifecycle state is STARTED
-            try {
-                viewModel.getCountryList()
-            } finally {
                 if (lifecycle.currentState >= Lifecycle.State.STARTED) { // this block providing user interact after lifecycle state being started
                     viewModel.cache.observe(viewLifecycleOwner, { data ->
-                        adapter.updateList(data = data.convertDataToPlaceHolder())
+                        Log.d(Constants.LOG_IO_DATA_TAG, "data on local database ${data}")
+                        if (data.isEmpty())
+                            viewModel.getCountryList()
+                        else
+                            adapter.updateList(data = data.convertDataToPlaceHolder())
                     })
 
                     viewModel.networkResLiveData.observe(viewLifecycleOwner, {
@@ -59,8 +59,6 @@ class CountryListFragment : DaggerFragment() {
                         }
                     })
                 }
-
-            }
         }
     }
 

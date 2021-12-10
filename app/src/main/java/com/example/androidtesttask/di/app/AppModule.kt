@@ -1,10 +1,13 @@
 package com.example.androidtesttask.di.app
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
 import com.example.androidtesttask.Constants
 import com.example.androidtesttask.Constants.DATABASE_NAME
+import com.example.androidtesttask.Constants.DEFAULT_SHARED_PREFERENCES
 import com.example.androidtesttask.cache.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -36,6 +39,13 @@ class AppModule {
             .serverUrl(Constants.DOMAIN_NAME)
             .okHttpClient(okHttpClient)
             .build()
+    }
+
+
+    @Singleton
+    @Provides
+    fun provideDataPreferences(application: Application): SharedPreferences {
+        return application.getSharedPreferences(DEFAULT_SHARED_PREFERENCES, Context.MODE_PRIVATE)
     }
 
 }
