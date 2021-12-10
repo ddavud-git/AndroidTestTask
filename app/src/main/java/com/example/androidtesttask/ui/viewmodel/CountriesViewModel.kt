@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.exception.ApolloNetworkException
 import com.example.androidtesttask.Constants
+import com.example.androidtesttask.entity.PlaceholderItem
 import com.example.androidtesttask.network.ResultStatus
 import com.example.androidtesttask.repository.country.CountryRepoImpl
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,9 @@ class CountriesViewModel @Inject constructor(
     private val countryRepoImpl: CountryRepoImpl
 ) :
     ViewModel() {
+
+    val itemDetailsLiveData= MutableLiveData<PlaceholderItem>()
+
     private val _networkResMutableLiveData = MutableLiveData<ResultStatus>()
 
     val networkResLiveData: LiveData<ResultStatus> get() = _networkResMutableLiveData
@@ -41,6 +45,9 @@ class CountriesViewModel @Inject constructor(
         }
     }
 
+    fun postItem(item: PlaceholderItem) {
+        itemDetailsLiveData.postValue(item)
+    }
 
 
 }

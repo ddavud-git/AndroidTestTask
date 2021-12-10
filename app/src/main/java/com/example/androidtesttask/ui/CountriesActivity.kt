@@ -1,35 +1,66 @@
 package com.example.androidtesttask.ui
 
 import android.os.Bundle
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.fragment.app.Fragment
 import com.example.androidtesttask.R
 import com.example.androidtesttask.databinding.ActivityItemDetailBinding
 import dagger.android.support.DaggerAppCompatActivity
 
 class CountriesActivity : DaggerAppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
+    private val itemDetailFragment = CountryDetailFragment()
+
+    private val countryListFragment = CountryListFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val binding = ActivityItemDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail) as NavHostFragment
-        val navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        if (savedInstanceState == null)
+            createParentFragment()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_item_detail)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+    private fun getCurrentFragment(): Fragment? {
+        return supportFragmentManager.findFragmentById(R.id.nav_host_fragment_item_detail)
     }
+
+
+    private fun createParentFragment(
+    ) {
+        addFragment(countryListFragment)
+    }
+
+
+    fun replaceChildFragment(
+        holderId: Int
+    ) {
+        replaceFragment(holderId, itemDetailFragment)
+    }
+
+    fun addChildFragment() {
+        addFragment(itemDetailFragment)
+    }
+
+    private fun addFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .add(R.id.nav_host_fragment_item_detail, fragment)
+            .addToBackStack(fragment.tag)
+            .commit()
+    }
+
+    private fun replaceFragment(holderId: Int = 0, fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(holderId, fragment)
+            .commit()
+    }
+
+    override fun onBackPressed() {
+        if (getCurrentFragment() is CountryListFragment)
+           finish()
+        else {
+            super.onBackPressed()
+        }
+
+    }
+
 }

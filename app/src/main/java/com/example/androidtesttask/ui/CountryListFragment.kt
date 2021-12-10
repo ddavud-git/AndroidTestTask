@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidtesttask.Constants
 import com.example.androidtesttask.R
@@ -43,7 +42,7 @@ class CountryListFragment : DaggerFragment() {
                 if (lifecycle.currentState >= Lifecycle.State.STARTED) { // this block providing user interact after lifecycle state being started
                     viewModel.cache.observe(viewLifecycleOwner, { data ->
                         Log.d(Constants.LOG_IO_DATA_TAG, "data on local database ${data}")
-                        if (data.isEmpty())
+                        if (data.isEmpty()) //If local db is empty try to fetch static data from network and save to db
                             viewModel.getCountryList()
                         else
                             adapter.updateList(data = data.convertDataToPlaceHolder())
@@ -92,16 +91,19 @@ class CountryListFragment : DaggerFragment() {
 
         val onClickListener = View.OnClickListener { itemView ->
             val item = itemView.tag as PlaceholderItem
-            val bundle = Bundle()
-            bundle.putParcelable(
-                CountryDetailFragment.ARG_ITEM_ID,
-                item
-            )
+//            val bundle = Bundle()
+//            bundle.putParcelable(
+//                CountryDetailFragment.ARG_ITEM_ID,
+//                item
+//            )
+            viewModel.postItem(item)
             if (itemDetailFragmentContainer != null) {
-                itemDetailFragmentContainer.findNavController()
-                    .navigate(R.id.fragment_item_detail, bundle)
+
+                (requireActivity() as CountriesActivity).replaceChildFragment(itemDetailFragmentContainer.id)
+
+
             } else {
-                itemView.findNavController().navigate(R.id.show_item_detail, bundle)
+                (requireActivity() as CountriesActivity).addChildFragment()
             }
         }
 

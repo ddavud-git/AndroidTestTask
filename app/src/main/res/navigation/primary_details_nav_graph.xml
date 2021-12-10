@@ -17,7 +17,9 @@
         android:id="@+id/item_detail_fragment"
         android:name="com.example.androidtesttask.ui.CountryDetailFragment"
         android:label="Country details"
-        tools:layout="@layout/fragment_item_detail">
+        tools:layout="@layout/fragment_item_detail"
+        app:popUpTo="@+id/item_list_fragment"
+        app:popUpToInclusive="true">
         <argument
             android:name="item_id"
             app:argType="com.example.androidtesttask.entity.PlaceholderItem" />
