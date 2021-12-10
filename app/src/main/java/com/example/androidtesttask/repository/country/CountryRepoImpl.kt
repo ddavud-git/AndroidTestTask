@@ -45,11 +45,11 @@ class CountryRepoImpl @Inject constructor(
 
 
     private fun setDataIsFetched() {
-        sharedPreferences.edit().putBoolean(Constants.IS_DATA_FETCHED, true).apply()
+        sharedPreferences.edit().putBoolean(Constants.IS_DATA_FETCHED_KEY, true).apply()
     }
 
     private fun IsDataFetched(): Boolean {
-        return sharedPreferences.getBoolean(Constants.IS_DATA_FETCHED, false)
+        return sharedPreferences.getBoolean(Constants.IS_DATA_FETCHED_KEY, false)
     }
 
 }
